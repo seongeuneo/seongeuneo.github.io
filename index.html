@@ -1,0 +1,599 @@
+<title>어성은</title>
+<style>
+  :root {
+    --bg: #F7F5EF;
+    --paper: #FFFFFF;
+    --surface-2: #EFEBDD;
+    --ink: #1A2233;
+    --ink-muted: #5B6472;
+    --line: #C7CBBD;
+    --line-strong: #1A2233;
+    --accent: #B3491E;
+    --accent-strong: #8A3714;
+    --accent-soft: #F3E2D6;
+    --tag-bg: #EFEBDD;
+    --tag-text: #33392F;
+    --code-bg: #EFEBDD;
+    --shadow: 0 1px 0 rgba(26,34,51,0.04), 0 10px 26px -16px rgba(26,34,51,0.18);
+    --grid-line: rgba(26,34,51,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E1420;
+      --paper: #121A29;
+      --surface-2: #16202F;
+      --ink: #DCE6F2;
+      --ink-muted: #8291A6;
+      --line: #29394E;
+      --line-strong: #6FD3E8;
+      --accent: #6FD3E8;
+      --accent-strong: #9BE3F2;
+      --accent-soft: #14313D;
+      --tag-bg: #16202F;
+      --tag-text: #B7CCDE;
+      --code-bg: #101826;
+      --shadow: 0 1px 0 rgba(0,0,0,0.3), 0 10px 26px -16px rgba(0,0,0,0.6);
+      --grid-line: rgba(111,211,232,0.08);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E1420;
+    --paper: #121A29;
+    --surface-2: #16202F;
+    --ink: #DCE6F2;
+    --ink-muted: #8291A6;
+    --line: #29394E;
+    --line-strong: #6FD3E8;
+    --accent: #6FD3E8;
+    --accent-strong: #9BE3F2;
+    --accent-soft: #14313D;
+    --tag-bg: #16202F;
+    --tag-text: #B7CCDE;
+    --code-bg: #101826;
+    --shadow: 0 1px 0 rgba(0,0,0,0.3), 0 10px 26px -16px rgba(0,0,0,0.6);
+    --grid-line: rgba(111,211,232,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { background: var(--bg); }
+
+  body {
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 100% 28px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 28px 100%,
+      var(--bg);
+    color: var(--ink);
+    font-family: "Archivo", -apple-system, "Malgun Gothic", sans-serif;
+    margin: 0;
+    padding-inline: 20px;
+    padding-block: 32px 80px;
+    line-height: 1.65;
+    font-size: 15.5px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 780px; margin: 0 auto; }
+
+  h1, h2, h3 {
+    font-family: "Big Shoulders Display", "Archivo", sans-serif;
+    font-weight: 700;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  /* ---------- Title block (engineering drawing style) ---------- */
+  .titleblock {
+    border: 1.5px solid var(--line-strong);
+    background: var(--paper);
+    box-shadow: var(--shadow);
+    margin-bottom: 26px;
+  }
+  .tb-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 22px 24px 18px;
+    border-bottom: 1.5px solid var(--line-strong);
+  }
+  .tb-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .titleblock h1 { font-size: clamp(34px, 6.5vw, 50px); line-height: 1.02; margin-top: 6px; }
+  .tb-role { font-size: 15.5px; color: var(--ink-muted); text-transform: none; margin-top: 8px; max-width: 46ch; }
+  .tb-drawno {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    text-align: right;
+    white-space: nowrap;
+    padding-top: 4px;
+  }
+  .tb-drawno strong { display: block; color: var(--ink); font-size: 13px; margin-bottom: 3px; }
+  .tb-lede {
+    padding: 16px 24px;
+    font-size: 14.5px;
+    color: var(--ink);
+    border-bottom: 1.5px solid var(--line-strong);
+    max-width: 64ch;
+  }
+  .tb-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  .tb-field {
+    padding: 10px 24px;
+    border-right: 1px solid var(--line);
+    border-top: 1px solid var(--line);
+  }
+  .tb-fields .tb-field:first-child { border-top: none; }
+  @media (min-width: 560px) {
+    .tb-fields .tb-field:nth-child(-n+2) { border-top: none; }
+  }
+  .tb-field:last-child { border-right: none; }
+  .tb-field .k {
+    display: block;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 3px;
+  }
+  .tb-field .v { font-size: 13.5px; }
+  .tb-field .v a { color: var(--accent-strong); text-decoration: none; border-bottom: 1px solid var(--accent); }
+  .tb-field .v a:hover { color: var(--accent); }
+
+  /* ---------- Nav ---------- */
+  nav.toc {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 5;
+    display: flex; gap: 4px; flex-wrap: wrap;
+    background: var(--bg);
+    padding-block: 10px;
+    margin-bottom: 8px;
+    border-bottom: 1.5px solid var(--line-strong);
+  }
+  nav.toc a {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--ink-muted);
+    text-decoration: none;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+  }
+  nav.toc a:hover { color: var(--accent-strong); border-color: var(--line); background: var(--surface-2); }
+
+  /* ---------- Sections ---------- */
+  section { margin-block: 44px; scroll-margin-top: 56px; }
+  section > h2 {
+    font-size: 24px;
+    display: flex; align-items: baseline; gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1.5px solid var(--line-strong);
+  }
+  section > h2 .num {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Skills ---------- */
+  .skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .skill-card {
+    background: var(--paper);
+    padding: 14px 16px;
+  }
+  .skill-card h3 {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border: 1px solid var(--line);
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+
+  /* ---------- Projects ---------- */
+  .project {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--line-strong);
+    padding: 24px 26px;
+    box-shadow: var(--shadow);
+    margin-bottom: 22px;
+  }
+  .project-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 8px 16px;
+    margin-bottom: 6px;
+  }
+  .project-head h3 { font-size: 21px; }
+  .project-period {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    padding-top: 6px;
+  }
+  .project-meta {
+    font-size: 13.5px; color: var(--ink-muted); margin-bottom: 16px;
+  }
+  .project h4 {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    margin: 18px 0 8px 0;
+    font-weight: 600;
+  }
+  .project h4:first-of-type { margin-top: 0; }
+  .project ul { margin: 0; padding-left: 19px; }
+  .project li { margin-bottom: 5px; }
+  .flow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  @media (min-width: 560px) {
+    .flow { grid-template-columns: repeat(3, 1fr); }
+  }
+  .flow-step {
+    background: var(--surface-2);
+    padding: 12px 14px;
+    font-size: 13.5px;
+  }
+  .flow-step .k {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink-muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .flow-step.result { background: var(--accent-soft); }
+  .flow-step.result .k { color: var(--accent-strong); }
+  .stack-row { margin-top: 16px; }
+  .learned {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+    font-size: 14px; color: var(--ink-muted);
+    font-style: italic;
+  }
+  .note {
+    font-size: 13px; color: var(--ink-muted);
+    background: var(--surface-2);
+    padding: 8px 12px;
+    margin-bottom: 16px;
+  }
+
+  /* ---------- AI section ---------- */
+  .ai-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .ai-card h3 { font-size: 17px; margin-bottom: 8px; text-transform: none; }
+  .ai-card p { margin: 0; color: var(--ink); font-size: 14.5px; }
+  .stat-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .stat {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    background: var(--accent-soft);
+    color: var(--accent-strong);
+    border: 1px solid var(--line);
+    padding: 5px 10px;
+  }
+
+  /* ---------- Timeline (education) ---------- */
+  .timeline { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); }
+  .t-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    padding-block: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .t-period {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-muted);
+    padding-top: 2px;
+  }
+  .t-body strong { display: block; font-size: 14.5px; margin-bottom: 3px; font-weight: 600; }
+  .t-body span { font-size: 13.5px; color: var(--ink-muted); }
+
+  /* ---------- Certs / footer ---------- */
+  .cert-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cert {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 6px 14px;
+  }
+  footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1.5px solid var(--line-strong);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    text-align: center;
+    text-transform: uppercase;
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<div class="wrap">
+
+  <div class="titleblock">
+    <div class="tb-top">
+      <div>
+        <span class="tb-eyebrow">Portfolio Dwg. · Backend / Full-stack</span>
+        <h1>어성은</h1>
+        <p class="tb-role">신규 서비스 리드부터 레거시 운영, 성능 최적화까지 — 실무로 넓혀온 백엔드 개발자</p>
+      </div>
+      <div class="tb-drawno">
+        <strong>NO. ES-2026</strong>
+        REV. 03<br>
+        SCALE 1:1
+      </div>
+    </div>
+    <p class="tb-lede">QA로 커리어를 시작해 백엔드 개발자로 전향했습니다. 처음부터 서비스를 설계·구축하는 일과 이미 운영 중인 시스템을 안정적으로 지키는 일을 함께 경험했고, 최근에는 Claude Code 같은 AI Agent를 실무 워크플로우에 접목하고 있습니다.</p>
+    <div class="tb-fields">
+      <div class="tb-field"><span class="k">Email</span><span class="v">djandcl@naver.com</span></div>
+      <div class="tb-field"><span class="k">Phone</span><span class="v">010-4935-1018</span></div>
+      <div class="tb-field"><span class="k">Blog</span><span class="v"><a href="https://eocoring.tistory.com/" target="_blank" rel="noopener">eocoring.tistory.com</a></span></div>
+      <div class="tb-field"><span class="k">GitHub</span><span class="v">비공개 · 요청 시 코드리뷰 공유</span></div>
+    </div>
+  </div>
+
+  <nav class="toc">
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#ai">AI 활용</a>
+    <a href="#education">교육·자격</a>
+  </nav>
+
+  <section id="skills">
+    <h2><span class="num">Fig. 01</span> Skills</h2>
+    <div class="skill-grid">
+      <div class="skill-card">
+        <h3>Language / Framework</h3>
+        <div class="tags">
+          <span class="tag">Java</span><span class="tag">C#(.NET)</span><span class="tag">Spring Boot</span>
+          <span class="tag">Spring Legacy</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span>
+          <span class="tag">React</span><span class="tag">Vue3</span><span class="tag">Python</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Database</h3>
+        <div class="tags">
+          <span class="tag">MySQL</span><span class="tag">MariaDB</span><span class="tag">Oracle</span>
+          <span class="tag">MyBatis</span><span class="tag">JPA</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Infra / Tools</h3>
+        <div class="tags">
+          <span class="tag">AWS S3</span><span class="tag">IAM</span><span class="tag">CodePipeline</span>
+          <span class="tag">Redis</span><span class="tag">Git</span><span class="tag">Sentry</span>
+          <span class="tag">Jenkins</span><span class="tag">GitLab CI/CD</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>AI Tools</h3>
+        <div class="tags">
+          <span class="tag">Claude Code</span><span class="tag">ChatGPT API Fine-tuning</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2><span class="num">Fig. 02</span> Projects</h2>
+
+    <article class="project">
+      <div class="project-head">
+        <h3>APS — 생산 스케줄링 시스템 풀스택 개발</h3>
+        <span class="project-period mono">브이엠에스솔루션스 · 2024.10 ~ 현재</span>
+      </div>
+      <p class="project-meta">스케줄링 엔진이 산출한 생산 계획 데이터를 고객이 조회·활용할 수 있는 웹 서비스 — 백엔드부터 화면까지 풀스택 담당</p>
+
+      <h4>담당 역할</h4>
+      <ul>
+        <li>스케줄링 엔진 결과 데이터를 처리하는 백엔드 API 설계 및 개발</li>
+        <li>고객이 직관적으로 조회할 수 있는 화면(프론트엔드) 구현</li>
+        <li>입사 초기 C#(.NET) 기반 도메인 백엔드로 시작, 이후 Java 프로젝트로 담당 범위 확장</li>
+      </ul>
+
+      <h4>문제 해결 — 대용량 데이터 조회 성능</h4>
+      <div class="flow">
+        <div class="flow-step">
+          <span class="k">문제</span>
+          20만 건 이상 output 데이터 조회에 약 3분 소요
+        </div>
+        <div class="flow-step">
+          <span class="k">과정</span>
+          쿼리 실행계획 분석 → 인덱스 설계 → 소스 리팩토링
+        </div>
+        <div class="flow-step result">
+          <span class="k">결과</span>
+          조회 속도 대폭 단축, 실시간에 가까운 확인 가능
+        </div>
+      </div>
+
+      <div class="stack-row tags">
+        <span class="tag">Java</span><span class="tag">C#(.NET)</span><span class="tag">Vue3</span>
+        <span class="tag">React</span><span class="tag">TypeScript</span>
+      </div>
+
+      <p class="learned">낯선 언어(C#)로 시작한 도메인을 작은 단위로 나눠 구현·검증하며 완성한 뒤, 이후 Java 프로젝트로 범위를 넓혔다. 특정 스택에 갇히지 않고 필요한 기술을 빠르게 습득하는 계기가 된 프로젝트.</p>
+    </article>
+
+    <article class="project">
+      <div class="project-head">
+        <h3>댕이고 — 반려동물 웹앱 신규 서비스</h3>
+        <span class="project-period mono">비브랩 · 2024.03 ~ 2024.09</span>
+      </div>
+      <p class="project-meta">FO(사용자)/BO(관리자) API를 처음부터 설계한 신규 구축 프로젝트 — 2인 → 3인으로 확장된 팀</p>
+
+      <h4>담당 역할</h4>
+      <ul>
+        <li>팀 내 패키지 지분율 약 80%, 핵심 로직 대부분을 주도적으로 설계·구현</li>
+        <li>DB 설계 및 CustomException 설계로 API 전반의 예외 처리 일관성 확보</li>
+        <li>AWS S3 기반 공통 이미지 관리 + Spring Scheduler로 임시 이미지 자동 정리</li>
+        <li>Interceptor로 비회원 사용자 접근 제어 구현</li>
+        <li>ChatGPT API Fine-tuning(jsonl)을 활용한 사주 콘텐츠 기능 개발</li>
+        <li>외부 API 연동 기반 운세·궁합·MBTI 기능, 1:1 문의·사진일기·배너 CRUD</li>
+      </ul>
+
+      <div class="stack-row tags">
+        <span class="tag">Java 17</span><span class="tag">Spring Boot 3.2.5</span><span class="tag">MariaDB</span>
+        <span class="tag">MyBatis</span><span class="tag">JWT</span><span class="tag">AWS S3/IAM/CodePipeline</span>
+        <span class="tag">Redis</span><span class="tag">Sentry</span>
+      </div>
+
+      <p class="learned">0에서 1을 만드는 프로젝트를 리드하며, 설계 단계의 결정이 이후 개발 속도와 유지보수성에 미치는 영향을 체감했다.</p>
+    </article>
+
+    <article class="project">
+      <div class="project-head">
+        <h3>토요타서비스 웹앱 — 레거시 시스템 유지보수</h3>
+        <span class="project-period mono">비브랩 · 2024.03 ~ 2024.09 (병행)</span>
+      </div>
+      <p class="project-meta">이미 운영 중인 토요타코리아 서비스 웹앱(FO/BO)의 안정적 운영과 개선</p>
+
+      <h4>담당 역할</h4>
+      <ul>
+        <li>로그 분석 기반 API 통신 이슈 대응, 서버 관리, 형상 관리</li>
+        <li>NICE API를 활용해 CI 값이 없는 기존 고객의 CI 수집 기능 개발</li>
+        <li>법인/개인 계정 회원 정보 수정 분기 처리 개발</li>
+        <li>GTM 스크립트 도입으로 사용자 트래픽 분석 체계 구축</li>
+      </ul>
+
+      <div class="stack-row tags">
+        <span class="tag">Spring Legacy</span><span class="tag">Java 8</span><span class="tag">JSP</span>
+      </div>
+
+      <p class="learned">레거시 코드의 기존 로직과 제약을 정확히 이해한 뒤 신중하게 변경하는 능력, 신규 개발과는 다른 운영 관점의 문제 해결력을 길렀다.</p>
+    </article>
+  </section>
+
+  <section id="ai">
+    <h2><span class="num">Fig. 03</span> AI 활용 경험</h2>
+
+    <div class="ai-card">
+      <h3>Claude Code를 활용한 디버깅 자동화 &amp; 성능 개선</h3>
+      <p>새로운 도메인을 맡을 때, 서비스 구조와 주요 로직을 md 파일로 정리해 Claude Code에 학습시킨 뒤 오류 분석을 요청하는 워크플로우를 구축했다. 방대한 로그를 직접 훑는 대신 AI가 원인 후보를 좁혀주며 디버깅 시간을 크게 줄였고, 같은 방식을 성능 개선에도 적용했다.</p>
+      <div class="stat-row">
+        <span class="stat">데이터 저장 2분 → 30초 이내</span>
+        <span class="stat">100~200건 처리 기준</span>
+      </div>
+    </div>
+
+    <div class="ai-card">
+      <h3>ChatGPT API Fine-tuning — 사주 콘텐츠 기능</h3>
+      <p>jsonl 형식의 데이터셋으로 ChatGPT API를 Fine-tuning해 반려동물 웹앱 내 사주 콘텐츠 기능을 개발했다. 학습 데이터 구성부터 API 연동까지 전 과정을 직접 경험했다.</p>
+    </div>
+
+    <div class="ai-card">
+      <h3>Claude Code로 인프라 장애 대응 — 배포 서버 디스크 공간 부족</h3>
+      <p>배포 서버의 디스크 공간 부족(AGENT_STORAGE_PRESSURE)으로 배포가 실패하는 장애를 Claude Code와 함께 대응했다. Agent·nginx 서비스를 C→D 드라이브로 이전하는 과정에서 설정 파일·환경변수 곳곳에 C드라이브 경로가 하드코딩되어 발생한 연쇄 장애(에이전트 크래시, 502 에러, nginx 다운타임)를, Claude Code로 로그를 분석하며 "경로 하드코딩"이라는 공통 원인 패턴을 좁혀 하나씩 복구했다.</p>
+      <div class="stat-row">
+        <span class="stat">서비스 무중단 이전 (C → D 드라이브)</span>
+        <span class="stat">연쇄 장애 4건 순차 복구</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <h2><span class="num">Fig. 04</span> 교육 · 자격</h2>
+
+    <div class="timeline">
+      <div class="t-item">
+        <div class="t-period">2023.05 – 2023.12</div>
+        <div class="t-body">
+          <strong>풀스택 프로그래밍 교육</strong>
+          <span>그림컴퓨터아카데미 — Spring Boot/JPA, MySQL, HTML/CSS/JS, Git 협업</span>
+        </div>
+      </div>
+      <div class="t-item">
+        <div class="t-period">2024.02</div>
+        <div class="t-body">
+          <strong>AWS 강의</strong>
+          <span>인프런 — AWS 핵심 서비스 이론 및 실습</span>
+        </div>
+      </div>
+      <div class="t-item">
+        <div class="t-period">2024.04 – 2024.09</div>
+        <div class="t-body">
+          <strong>자율 스터디</strong>
+          <span>Spring Legacy 기업 소개 사이트, Spring Boot API 통신, CI/CD(GitLab+Jenkins), Vue.js 2</span>
+        </div>
+      </div>
+      <div class="t-item">
+        <div class="t-period">2024.08</div>
+        <div class="t-body">
+          <strong>코딩애플 Vue3 강의</strong>
+          <span>Vue 3 기반 SPA 개발</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;" class="cert-list">
+      <span class="cert">SQL 개발자 · 2024.03</span>
+      <span class="cert">정보처리기사 · 2024.02</span>
+      <span class="cert">OPIc · 2023.03</span>
+      <span class="cert">TOEIC · 2022.08</span>
+    </div>
+  </section>
+
+  <footer>어성은 · Backend / Full-stack Developer Portfolio</footer>
+
+</div>
